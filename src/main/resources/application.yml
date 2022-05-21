@@ -1,0 +1,58 @@
+spring:
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/healerworld?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2b8
+    # 使用阿里巴巴的Druid数据库连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 连接池的配置信息
+    # 初始化大小，最小，最大连接数
+    initial-size: 10
+    min-idle: 10
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是ms
+    timeBetweenEvictionRunsMillis: 60000
+    # Destory线程中如果检测到当前连接的最后活跃时间和当前时间的差值大于
+    # minEvictableIdleTimeMillis，则关闭当前连接。单位是ms
+    minEvictableIdleTimeMillis: 300000
+    # 用来检测连接是否有效的sql，要求是一个查询语句。
+    validationQuery: SELECT 1
+    #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+    testWhileIdle: true
+    # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+    testOnBorrow: false
+    # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    # 配置监控统计拦截的filters，监控统计用的stat、日志用的log4j、 防御sql注入的wall
+    filters: stat,wall,slf4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    useGlobaiDataSourceStat: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+
+  mvc:
+    #视图解析器  需要整合jsp的话  需要这个配置
+    view:
+      prefix: /
+      suffix: .jsp
+
+#mybatis
+mybatis:
+  type-aliases-package: com.zbc.hospital.pojo,;com.zbc.hospital.admin.pojo  #实体类包
+  mapper-locations: classpath:/mapper/*.xml  #xml文件
+  #日志
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    com.zbc.hospital.dao: debug
+
+server:
+  port: 8080
+
